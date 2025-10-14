@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="" />
+    <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Added code to look at raw ace and wind data">
+      <change beforePath="$PROJECT_DIR$/.idea/Research_Espen.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Research_Espen.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_omni.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/get_omni.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Jupyter Notebook" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="6c07898d-3f51-472f-aafb-1e367d458260" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="33O4IMeOPRcPp6mgy9Z27BGavq8" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -21,12 +41,23 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-PY-252.26199.168" />
         <option value="bundled-python-sdk-b3d66beaba9a-c6efb3732140-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26199.168" />
       </set>
     </attachedChunks>
@@ -38,7 +69,59 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759174703636</updated>
+      <workItem from="1759177105924" duration="2523000" />
+      <workItem from="1759517371503" duration="669000" />
+      <workItem from="1759776295662" duration="49000" />
+      <workItem from="1759776406605" duration="4183000" />
+      <workItem from="1759869122936" duration="1379000" />
+      <workItem from="1760207108232" duration="5035000" />
+      <workItem from="1760284604587" duration="170000" />
+      <workItem from="1760363805161" duration="1283000" />
+      <workItem from="1760368951955" duration="4195000" />
+      <workItem from="1760386066117" duration="4028000" />
+      <workItem from="1760394176245" duration="897000" />
+      <workItem from="1760399144098" duration="3734000" />
+      <workItem from="1760407022128" duration="1348000" />
+      <workItem from="1760410171721" duration="5349000" />
+      <workItem from="1760449471156" duration="294000" />
+      <workItem from="1760449856663" duration="1071000" />
     </task>
+    <task id="LOCAL-00001" summary="Added code to look at raw ace and wind data">
+      <option name="closed" value="true" />
+      <created>1760450611247</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760450611247</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added code to look at raw ace and wind data">
+      <option name="closed" value="true" />
+      <created>1760450896674</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760450896674</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adding WindOrAce" />
+    <MESSAGE value="Added code to look at raw ace and wind data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added code to look at raw ace and wind data" />
   </component>
 </project>
