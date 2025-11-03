@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Added code to look at raw ace and wind data">
-      <change beforePath="$PROJECT_DIR$/.idea/Research_Espen.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Research_Espen.iml" afterDir="false" />
+    <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_omni.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/get_omni.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WindOrAce.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/WindOrAce.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +23,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;brianli755&quot;
+  }
+}</component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="6c07898d-3f51-472f-aafb-1e367d458260" />
   </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/brianli755/L1_Prop.git&quot;,
+    &quot;accountId&quot;: &quot;6c07898d-3f51-472f-aafb-1e367d458260&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -38,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.Jupyter Settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -84,7 +95,20 @@
       <workItem from="1760407022128" duration="1348000" />
       <workItem from="1760410171721" duration="5349000" />
       <workItem from="1760449471156" duration="294000" />
-      <workItem from="1760449856663" duration="1071000" />
+      <workItem from="1760449856663" duration="1853000" />
+      <workItem from="1760451851224" duration="707000" />
+      <workItem from="1760456549764" duration="507000" />
+      <workItem from="1760457902243" duration="488000" />
+      <workItem from="1760458743406" duration="757000" />
+      <workItem from="1760542223385" duration="1151000" />
+      <workItem from="1761519290153" duration="1601000" />
+      <workItem from="1761596783276" duration="7910000" />
+      <workItem from="1761605254686" duration="584000" />
+      <workItem from="1761607966250" duration="5284000" />
+      <workItem from="1762181124564" duration="1484000" />
+      <workItem from="1762182762373" duration="419000" />
+      <workItem from="1762200975102" duration="1147000" />
+      <workItem from="1762202147045" duration="1365000" />
     </task>
     <task id="LOCAL-00001" summary="Added code to look at raw ace and wind data">
       <option name="closed" value="true" />
@@ -109,11 +133,38 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -122,6 +173,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding WindOrAce" />
     <MESSAGE value="Added code to look at raw ace and wind data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added code to look at raw ace and wind data" />
+    <MESSAGE value="Collecting Raw ACE or Wind Data" />
+    <MESSAGE value="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data." />
   </component>
 </project>
