@@ -7,6 +7,7 @@
     <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WindOrAce.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/WindOrAce.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upstream_output.csv" beforeDir="false" afterPath="$PROJECT_DIR$/upstream_output.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +109,8 @@
       <workItem from="1762181124564" duration="1484000" />
       <workItem from="1762182762373" duration="419000" />
       <workItem from="1762200975102" duration="1147000" />
-      <workItem from="1762202147045" duration="1365000" />
+      <workItem from="1762202147045" duration="8862000" />
+      <workItem from="1762378902712" duration="6966000" />
     </task>
     <task id="LOCAL-00001" summary="Added code to look at raw ace and wind data">
       <option name="closed" value="true" />
