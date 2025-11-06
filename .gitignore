@@ -2,3 +2,5 @@
 *.csv
 */ace_data/ *
 */omni_data/*
+*/themis_data/*
+*/wind_data/*
