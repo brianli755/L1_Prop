@@ -1,0 +1,4 @@
+*.cdf
+*.csv
+*/ace_data/ *
+*/omni_data/*
