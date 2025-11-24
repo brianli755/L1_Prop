@@ -5,6 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data.">
+      <change afterPath="$PROJECT_DIR$/L1_compare/IMF.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/L1_compare/cdf-maker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/L1_compare/cdf_explorer.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/L1_compare/l1_propagate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WindOrAce.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/WindOrAce.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/upstream_output.csv" beforeDir="false" afterPath="$PROJECT_DIR$/upstream_output.csv" afterDir="false" />
@@ -53,10 +57,14 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Python Stub Packages Advertiser&quot;: &quot;Python stub package recommended&quot;,
+    &quot;Notification.DoNotAsk-Python Stub Packages Advertiser&quot;: &quot;true&quot;,
+    &quot;Python.cdf-maker.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Brian/PycharmProjects/Research_Espen/L1_compare&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -66,6 +74,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Brian\PycharmProjects\Research_Espen\L1_compare" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -110,7 +123,21 @@
       <workItem from="1762182762373" duration="419000" />
       <workItem from="1762200975102" duration="1147000" />
       <workItem from="1762202147045" duration="8862000" />
-      <workItem from="1762378902712" duration="6966000" />
+      <workItem from="1762378902712" duration="8759000" />
+      <workItem from="1762479745911" duration="57000" />
+      <workItem from="1762480482033" duration="50000" />
+      <workItem from="1762805766834" duration="5554000" />
+      <workItem from="1762878917305" duration="1670000" />
+      <workItem from="1762885104551" duration="65000" />
+      <workItem from="1762887023888" duration="52000" />
+      <workItem from="1762892451762" duration="39000" />
+      <workItem from="1762892521239" duration="13000" />
+      <workItem from="1762913769205" duration="5827000" />
+      <workItem from="1762996070968" duration="346000" />
+      <workItem from="1763235633124" duration="5729000" />
+      <workItem from="1763519007829" duration="5000" />
+      <workItem from="1763519492021" duration="59000" />
+      <workItem from="1763965805864" duration="3170000" />
     </task>
     <task id="LOCAL-00001" summary="Added code to look at raw ace and wind data">
       <option name="closed" value="true" />
@@ -178,5 +205,8 @@
     <MESSAGE value="Collecting Raw ACE or Wind Data" />
     <MESSAGE value="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data." />
     <option name="LAST_COMMIT_MESSAGE" value="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Research_Espen$cdf_maker.coverage" NAME="cdf-maker Coverage Results" MODIFIED="1762879355805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/L1_compare" />
   </component>
 </project>
