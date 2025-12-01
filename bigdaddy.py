@@ -4,6 +4,8 @@ import numpy as np
 import pyspedas
 from pyspedas import tplot
 import matplotlib.pyplot as plt
+import functions
+
 
 parser = ArgumentParser(description=__doc__,
                         formatter_class=RawDescriptionHelpFormatter)
@@ -20,6 +22,10 @@ l1_dist = 1495980      # L1 distance in km.
 kboltz = 1.380649E-23  # Boltzmann constant, J/K
 mp = 1.67262192E-27    # Proton mass in Kg
 bound_dist = 32 * RE   # Distance to BATS-R-US upstream boundary from Earth.
+
+# Set propagation variable names and units.
+swmf_vars = ['bx', 'by', 'bz', 'ux', 'uy', 'uz', 'n', 't']
+units = {v: u for v, u in zip(swmf_vars, 3*['nT']+3*['km/s']+['cm-3', 'K'])}
 
 
 # Import the OMNI, ACE, and Wind data using the list of times
