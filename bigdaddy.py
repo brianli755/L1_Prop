@@ -2,9 +2,9 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import pandas as pd
 import numpy as np
 import pyspedas
+import pytz
 from pyspedas import tplot
 import matplotlib.pyplot as plt
-from spacepy.lib import functions
 from scipy.signal import medfilt
 from datetime import datetime, timedelta
 from spacepy.pybats import ImfInput
@@ -18,6 +18,8 @@ from spacepy.datamodel import dmarray
 from glob import glob
 from os import path
 import re
+import pytz
+from dateutil.parser import isoparse
 
 import functions as f
 from pytplot import get_data
@@ -26,7 +28,7 @@ from pytplot import get_data
 parser = ArgumentParser(description=__doc__,
                         formatter_class=RawDescriptionHelpFormatter)
 parser.add_argument("input", type=str, help='The list of dates to analyze in the required .CSV format.')
-parser.add_argument("output", type=str, help='The data output file name.')
+#parser.add_argument("output", type=str, help='The data output file name.')
 # The --set_downstream flag takes True or False. True takes the average BSN distance and propagates the data there.
 # False propagates it to the BATS-R-US upstream boundary.
 parser.add_argument("--set_downstream", default=True, action='store_true',)
@@ -45,13 +47,13 @@ units = {v: u for v, u in zip(swmf_vars, 3*['nT']+3*['km/s']+['cm-3', 'K'])}
 
 
 # Import the OMNI, ACE, and Wind data using the list of times
-event_list = pd.read_csv(args.input, header=0)
-for e, event in enumerate(event_list):
+event_list = pd.read_csv(args.input, delimiter=',', header=0)
+for e in range(len(event_list)-1):
     start = event_list['Start'][e]
     date_stop = event_list['Stop'][e]
 
     # Set up OMNI importing code
-    sec = 5400
+    sec = 7200
     date_start = pd.to_datetime(start)
     shift = pd.Timedelta(sec, unit='s')
     ts = date_start - shift
@@ -171,7 +173,7 @@ for e, event in enumerate(event_list):
     for i in range(len(omni['IMF'])):
         delta = pd.Timedelta(omni['ts'][i], unit='s')
         time = omni['Time'][i] - delta
-        isotime = time.isoformat() + '.000Z'
+        isotime = time.isoformat() #+ '.000Z'
         shift.append(delta)
 
         match omni['IMF'][i]:
@@ -181,9 +183,9 @@ for e, event in enumerate(event_list):
                 # if ace doesn't have the data, get the data from wind
 
                 if np.isnan(ace['BZ'][ind]):
-                    print("found a nan")
+                    #("found a nan")
                     ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                    print('1')
+                    #print('1')
                     bx.append(wind['BX'][ind])
                     by.append(wind['BY'][ind])
                     bz.append(wind['BZ'][ind])
@@ -198,11 +200,10 @@ for e, event in enumerate(event_list):
 
             # if the spacecraft ID is 51 or 52 get the data from wind
             case 51 | 52:
-
                 ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
                 # if wind doesn't have the data, get the data from ace
                 if np.isnan(wind['BZ'][ind]):
-                    print("3")
+                    #print("3")
                     ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
                     bx.append(ace['BX'][ind])
                     by.append(ace['BY'][ind])
@@ -212,7 +213,7 @@ for e, event in enumerate(event_list):
                     pt_ID.append(71)
 
                 else:
-                    print('4')
+                    #print('4')
                     bx.append(wind['BX'][ind])
                     by.append(wind['BY'][ind])
                     bz.append(wind['BZ'][ind])
@@ -229,7 +230,7 @@ for e, event in enumerate(event_list):
                 up_time.append(isotime)
                 pt_ID.append(id)
 
-    mfi = pd.DataFrame({'Time': up_time, 'BX': bx, 'BY': by, 'BZ': bz})
+    mfi = pd.DataFrame({'Time': up_time, 'bx': bx, 'by': by, 'bz': bz})
     mfi = mfi.sort_values(by='Time')
     mfi = mfi.set_index('Time')
     mfi = mfi.reset_index()
@@ -248,7 +249,7 @@ for e, event in enumerate(event_list):
     for i in range(len(omni['IMF'])):
         delta = pd.Timedelta(omni['ts'][i], unit='s')
         time = omni['Time'][i] - delta
-        isotime = time.isoformat() + '.000Z'
+        isotime = time.isoformat() #+ '.000Z'
         shift.append(delta)
 
         match omni['IMF'][i]:
@@ -327,6 +328,7 @@ for e, event in enumerate(event_list):
     # Create unified time:
     t_swe, t_mag = swe['Time'][:], mfi['Time'][:]
     time = f.unify_time(t_swe, t_mag)
+    time = [isoparse(t) for t in time]
 
     # Convert coordinates:
     vx, vy, vz = f.gse_to_gsm(swe['VX'][:],
@@ -338,14 +340,14 @@ for e, event in enumerate(event_list):
 
     # Extract plasma parameters
     raw = {'time': time,
-           'n': f.pair(t_swe, swe['Np'][:], time, varname='n'),
+           'n': f.pair(t_swe, swe['NP'][:], time, varname='n'),
            't': f.pair(t_swe, temp, time, varname='t'),
            'ux': f.pair(t_swe, vx, time, varname='ux'),
            'uy': f.pair(t_swe, vy, time, varname='uy'),
            'uz': f.pair(t_swe, vz, time, varname='uz')}
 
     # Extract magnetic field parameters:
-    for b in ['BX', 'BY', 'BZ']:
+    for b in ['bx', 'by', 'bz']:
         raw[b] = f.pair(t_mag, mfi[b][:], raw['time'], varname=b)
 
     # Optional values: Update with more experience w/ wind...
@@ -379,7 +381,7 @@ for e, event in enumerate(event_list):
     keep = [0]
     discard = []
     lasttime = tshift[0]
-    for i in range(1, raw['time'].size):
+    for i in range(1, len(raw['time'])):
         if tshift[i] > lasttime:
             keep.append(i)
             lasttime = tshift[i]
@@ -410,8 +412,8 @@ for e, event in enumerate(event_list):
     for ax, v in zip(fig.axes, plotvars):
         c = ax.get_lines()[0].get_color()
         ax.plot(raw['time'], raw[v], '--', c=c, alpha=.5)
-        ax.plot(raw['time'][...][discard], raw[v][...][discard],
-                '.', c='crimson', alpha=.5)
+        #ax.plot(raw['time'][:][discard], raw[v][...][discard],
+                #'.', c='crimson', alpha=.5)
     l1 = Line2D([], [], color='gray', lw=4,
                 label='Timeshifted Values')
     l2 = Line2D([], [], color='gray', alpha=.5, linestyle='--', lw=4,
