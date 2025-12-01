@@ -4,7 +4,22 @@ import numpy as np
 import pyspedas
 from pyspedas import tplot
 import matplotlib.pyplot as plt
-import functions
+from spacepy.lib import functions
+from scipy.signal import medfilt
+from datetime import datetime, timedelta
+from spacepy.pybats import ImfInput
+from matplotlib.lines import Line2D
+from numpy import bool_
+from numpy.ma import MaskedArray
+from scipy.interpolate import interp1d
+from matplotlib.dates import date2num
+from spacepy.plot import style
+from spacepy.datamodel import dmarray
+from glob import glob
+from os import path
+import re
+
+import functions as f
 from pytplot import get_data
 
 
@@ -35,6 +50,7 @@ for e, event in enumerate(event_list):
     start = event_list['Start'][e]
     date_stop = event_list['Stop'][e]
 
+    # Set up OMNI importing code
     sec = 5400
     date_start = pd.to_datetime(start)
     shift = pd.Timedelta(sec, unit='s')
@@ -138,6 +154,270 @@ for e, event in enumerate(event_list):
     wind2 = wind2.resample('s').mean().interpolate(method='linear').ffill()
     wind2 = wind2.reset_index()
 
+    # Finding the correct shift distance
+    if args.set_downstream:
+        bound_dist = np.average(omni['BSN'])
 
-#finding the correct shift distance.
+    # Getting Upstream Data
+    # Uses the same stuff as before to generate a new upstream file, also exports a plot of it.
+    up_time = []
+    shift = []
 
+    bx = []
+    by = []
+    bz = []
+
+    pt_ID = []
+    for i in range(len(omni['IMF'])):
+        delta = pd.Timedelta(omni['ts'][i], unit='s')
+        time = omni['Time'][i] - delta
+        isotime = time.isoformat() + '.000Z'
+        shift.append(delta)
+
+        match omni['IMF'][i]:
+            # If the spacecraft ID is 71, get the data from ace.
+            case 71:
+                ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                # if ace doesn't have the data, get the data from wind
+
+                if np.isnan(ace['BZ'][ind]):
+                    print("found a nan")
+                    ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                    print('1')
+                    bx.append(wind['BX'][ind])
+                    by.append(wind['BY'][ind])
+                    bz.append(wind['BZ'][ind])
+                    up_time.append(isotime)
+                    pt_ID.append(51)
+                else:
+                    bx.append(ace['BX'][ind])
+                    by.append(ace['BY'][ind])
+                    bz.append(ace['BZ'][ind])
+                    up_time.append(isotime)
+                    pt_ID.append(71)
+
+            # if the spacecraft ID is 51 or 52 get the data from wind
+            case 51 | 52:
+
+                ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                # if wind doesn't have the data, get the data from ace
+                if np.isnan(wind['BZ'][ind]):
+                    print("3")
+                    ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                    bx.append(ace['BX'][ind])
+                    by.append(ace['BY'][ind])
+                    bz.append(ace['BZ'][ind])
+
+                    up_time.append(isotime)
+                    pt_ID.append(71)
+
+                else:
+                    print('4')
+                    bx.append(wind['BX'][ind])
+                    by.append(wind['BY'][ind])
+                    bz.append(wind['BZ'][ind])
+
+                    up_time.append(isotime)
+                    pt_ID.append(51)
+
+            case _:
+                id = pt_ID[-1]
+                bx.append(np.nan)
+                by.append(np.nan)
+                bz.append(np.nan)
+
+                up_time.append(isotime)
+                pt_ID.append(id)
+
+    mfi = pd.DataFrame({'Time': up_time, 'BX': bx, 'BY': by, 'BZ': bz})
+    mfi = mfi.sort_values(by='Time')
+    mfi = mfi.set_index('Time')
+    mfi = mfi.reset_index()
+
+    up_time = []
+    shift = []
+
+    vx = []
+    vy = []
+    vz = []
+
+    npr = []
+    temp = []
+
+    pt_ID = []
+    for i in range(len(omni['IMF'])):
+        delta = pd.Timedelta(omni['ts'][i], unit='s')
+        time = omni['Time'][i] - delta
+        isotime = time.isoformat() + '.000Z'
+        shift.append(delta)
+
+        match omni['IMF'][i]:
+            # If the spacecraft ID is 71, get the data from ace.
+            case 71:
+                ind = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                # if ace doesn't have the data, get the data from wind
+                if np.isnan(ace2['VX'][ind]):
+                    ind = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                    vx.append(wind2['VX'][ind])
+                    vy.append(wind2['VY'][ind])
+                    vz.append(wind2['VZ'][ind])
+
+                    npr.append(wind2['NP'][ind])
+                    temp.append(wind2['Temp'][ind])
+
+                    pt_ID.append(51)
+                    up_time.append(isotime)
+
+                else:
+                    vx.append(ace2['VX'][ind])
+                    vy.append(ace2['VY'][ind])
+                    vz.append(ace2['VZ'][ind])
+
+                    npr.append(ace2['NP'][ind])
+                    temp.append(ace2['Temp'][ind])
+                    up_time.append(isotime)
+                    pt_ID.append(71)
+
+            # if the spacecraft ID is 51 or 52 get the data from wind
+            case 51 | 52:
+                ind = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                # if wind doesn't have the data, get the data from ace
+                if np.isnan(wind2['VX'][ind]):
+                    ind = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+                    vx.append(ace2['VX'][ind])
+                    vy.append(ace2['VY'][ind])
+                    vz.append(ace2['VZ'][ind])
+
+                    npr.append(ace2['NP'][ind])
+                    temp.append(ace2['Temp'][ind])
+                    up_time.append(isotime)
+                    pt_ID.append(71)
+                else:
+                    vx.append(wind2['VX'][ind])
+                    vy.append(wind2['VY'][ind])
+                    vz.append(wind2['VZ'][ind])
+
+                    npr.append(wind2['NP'][ind])
+                    temp.append(wind2['Temp'][ind])
+                    up_time.append(isotime)
+                    pt_ID.append(51)
+
+            case _:
+                id = pt_ID[-1]
+                vx.append(np.nan)
+                vy.append(np.nan)
+                vz.append(np.nan)
+
+                npr.append(np.nan)
+                temp.append(np.nan)
+                up_time.append(isotime)
+                pt_ID.append(id)
+
+    swe = pd.DataFrame({'Time': up_time, 'VX': vx, 'VY': vy, 'VZ': vz, 'Temp': temp, 'NP': npr})
+    swe = swe.sort_values(by='Time')
+    swe = swe.set_index('Time')
+    swe = swe.reset_index()
+
+    # Plotting the upstream vs. OMNI
+    #fig, ax = plt.subplots(4, 1, figsize = (12, 16))
+    #ax[0].plot(omni['Time'], omni['VZ'], label='Omni', color='red', linestyle='-')
+
+    # Begin main propagation script:
+
+    # Create unified time:
+    t_swe, t_mag = swe['Time'][:], mfi['Time'][:]
+    time = f.unify_time(t_swe, t_mag)
+
+    # Convert coordinates:
+    vx, vy, vz = f.gse_to_gsm(swe['VX'][:],
+                            swe['VY'][:],
+                            swe['VZ'][:], swe['Time'][:])
+
+    # Convert temperature
+    temp = swe['Temp'][:]
+
+    # Extract plasma parameters
+    raw = {'time': time,
+           'n': f.pair(t_swe, swe['Np'][:], time, varname='n'),
+           't': f.pair(t_swe, temp, time, varname='t'),
+           'ux': f.pair(t_swe, vx, time, varname='ux'),
+           'uy': f.pair(t_swe, vy, time, varname='uy'),
+           'uz': f.pair(t_swe, vz, time, varname='uz')}
+
+    # Extract magnetic field parameters:
+    for b in ['BX', 'BY', 'BZ']:
+        raw[b] = f.pair(t_mag, mfi[b][:], raw['time'], varname=b)
+
+    # Optional values: Update with more experience w/ wind...
+    if 'PGSM' in mfi:
+        raw['pos'] = f.pair(t_mag, mfi['PGSM'][:, 0],
+                          raw['time'], varname='pos') * RE
+
+    # Create seconds-from-start time array:
+    tsec = np.array([(t - raw['time'][0]).total_seconds() for t in raw['time']])
+
+    # Get S/C distance. If not in file, use approximation.
+    if 'pos' in raw:
+        print('S/C location found! Using dynamic location.')
+        raw['X'] = raw['pos'] - bound_dist
+    else:
+        print('S/C location NOT found, using static L1 distance.')
+        raw['X'] = l1_dist - bound_dist
+
+    # Apply velocity smoothing as required
+    print(f'Applying smoothing using a 1 window size.')
+    velsmooth = medfilt(raw['ux'], 1)
+
+    print('Using BALLISTIC propagation.')
+    shift = raw['X']/velsmooth  # Time shift per point.
+    # Apply shift to times.
+    tshift = np.array([t1 - timedelta(seconds=t2) for t1, t2 in
+                       zip(raw['time'], shift)])
+
+    # Ensure that any points that are "overtaken" (i.e., slow wind overcome by
+    # fast wind) are removed. First, locate those points:
+    keep = [0]
+    discard = []
+    lasttime = tshift[0]
+    for i in range(1, raw['time'].size):
+        if tshift[i] > lasttime:
+            keep.append(i)
+            lasttime = tshift[i]
+        else:
+            discard.append(i)
+    print(f'Removing "overtaken" points {len(discard)} of {tsec.size} total.')
+
+    # Create new IMF object and populate with propagated values.
+    # Use the information above to throw out overtaken points.
+    imfout = ImfInput(f'{date_start.strftime('%Y-%m-%d')}_outfile.dat', load=False, npoints=len(keep))
+    for v in swmf_vars:
+        imfout[v] = dmarray(raw[v][keep], {'units': units[v]})
+    imfout['time'] = tshift[keep]
+    #imfout.attrs['header'].append(f'Source data: {file1}\n')
+
+    imfout.attrs['header'].append('Ballistically propagted from L1 to ' +
+                                      'upstream BATS-R-US boundary\n')
+    imfout.attrs['header'].append('\n')
+    imfout.attrs['coor'] = 'GSM'
+    imfout.attrs['satxyz'] = [np.mean(raw['X'])/RE, 0, 0]
+    imfout.attrs['header'].append(f'File created on {datetime.now()}')
+
+    imfout.write()
+
+    # Plot!
+    fig = imfout.quicklook(['by', 'bz', 'n', 't', 'ux'])
+    plotvars = ['by', 'bz', 'n', 't', 'ux']
+    for ax, v in zip(fig.axes, plotvars):
+        c = ax.get_lines()[0].get_color()
+        ax.plot(raw['time'], raw[v], '--', c=c, alpha=.5)
+        ax.plot(raw['time'][...][discard], raw[v][...][discard],
+                '.', c='crimson', alpha=.5)
+    l1 = Line2D([], [], color='gray', lw=4,
+                label='Timeshifted Values')
+    l2 = Line2D([], [], color='gray', alpha=.5, linestyle='--', lw=4,
+                label='Original Values')
+    l3 = Line2D([], [], marker='.', mfc='crimson', linewidth=0, mec='crimson',
+                markersize=10, label='Removed Points')
+    fig.legend(handles=[l1, l2, l3], loc='upper center', ncol=3)
+    fig.subplots_adjust(top=.933)
+    fig.savefig(f'{date_start.strftime('%Y-%m-%d')}_outputprop.png')
