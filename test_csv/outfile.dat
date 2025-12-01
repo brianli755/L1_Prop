@@ -1,4 +1,4 @@
-File created on 2025-11-30T21:19:19.474369
+File created on 2025-12-01T14:25:10.187380
 Source data:                           Time  ...  Proton_Np_moment
 0    2016-05-06 10:57:59+00:00  ...          9.564263
 1    2016-05-06 10:58:41+00:00  ...          9.472728
@@ -15,7 +15,7 @@ Source data:                           Time  ...  Proton_Np_moment
 [1440 rows x 6 columns]
 Ballistically propagted from L1 to upstream BATS-R-US boundary
 
-File created on 2025-11-30 21:19:19.473954#COOR
+File created on 2025-12-01 14:25:10.186946#COOR
 GSM
 
 #SATELLITEXYZ
