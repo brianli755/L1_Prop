@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data.">
-      <change afterPath="$PROJECT_DIR$/test_csv/l1_spoof.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_csv/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/L1_compare/cdf_explorer.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/L1_compare/cdf_explorer.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WindOrAce.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/WindOrAce.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bigdaddy.py" beforeDir="false" afterPath="$PROJECT_DIR$/bigdaddy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +22,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="brian" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -222,7 +224,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Research_Espen$cdf_maker.coverage" NAME="cdf-maker Coverage Results" MODIFIED="1762879355805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/L1_compare" />
-    <SUITE FILE_PATH="coverage/Research_Espen$test.coverage" NAME="test Coverage Results" MODIFIED="1764559023007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
-    <SUITE FILE_PATH="coverage/Research_Espen$l1_spoof.coverage" NAME="l1_spoof Coverage Results" MODIFIED="1764558458275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
+    <SUITE FILE_PATH="coverage/Research_Espen$test.coverage" NAME="test Coverage Results" MODIFIED="1764620688489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
+    <SUITE FILE_PATH="coverage/Research_Espen$l1_spoof.coverage" NAME="l1_spoof Coverage Results" MODIFIED="1764559628404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
   </component>
 </project>
