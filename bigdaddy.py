@@ -9,6 +9,7 @@ from scipy.signal import medfilt
 from datetime import datetime, timedelta
 from spacepy.pybats import ImfInput
 from matplotlib.lines import Line2D
+from spacepy.plot import applySmartTimeTicks
 from numpy import bool_
 from numpy.ma import MaskedArray
 from scipy.interpolate import interp1d
@@ -407,19 +408,30 @@ for e in range(len(event_list)-1):
     imfout.write()
 
     # Plot!
-    fig = imfout.quicklook(['by', 'bz', 'n', 't', 'ux'])
+    fig, ax = plt.subplots(5, 1, figsize=(8, 10))
+    print(fig.axes[-1])
+    #fig = imfout.quicklook(['by', 'bz', 'n', 't', 'ux'])
     plotvars = ['by', 'bz', 'n', 't', 'ux']
-    for ax, v in zip(fig.axes, plotvars):
-        c = ax.get_lines()[0].get_color()
+    color = ['C0', 'C1', 'C2', 'C3', 'C4']
+    timerange = [raw['time'][0], imfout['time'][-1]]
+
+    for ax, v, c in zip(fig.axes, plotvars, color):
+        #c = ax.get_lines()[0].get_color()
+        ax.plot(imfout['time'], imfout[v], c=c)
         ax.plot(raw['time'], raw[v], '--', c=c, alpha=.5)
         #ax.plot(raw['time'][:][discard], raw[v][...][discard],
                 #'.', c='crimson', alpha=.5)
-    l1 = Line2D([], [], color='gray', lw=4,
-                label='Timeshifted Values')
-    l2 = Line2D([], [], color='gray', alpha=.5, linestyle='--', lw=4,
-                label='Original Values')
-    l3 = Line2D([], [], marker='.', mfc='crimson', linewidth=0, mec='crimson',
-                markersize=10, label='Removed Points')
-    fig.legend(handles=[l1, l2, l3], loc='upper center', ncol=3)
-    fig.subplots_adjust(top=.933)
-    fig.savefig(f'{date_start.strftime('%Y-%m-%d')}_outputprop.png')
+    l1 = Line2D([], [], color='red', lw=4,
+                label='Timeshifted (Downstream) Values')
+    l2 = Line2D([], [], color='red', alpha=.5, linestyle='--', lw=4,
+                label='Original (Reconstructed Upstream) Values')
+    #l3 = Line2D([], [], marker='.', mfc='crimson', linewidth=0, mec='crimson',
+                #markersize=10, label='Removed Points')
+    fig.legend(handles=[l1, l2], loc='upper center', ncol=2)
+    #fig.subplots_adjust(top=.933)
+    fig.subplots_adjust(hspace=0.04, top=0.95, right=0.95,
+                        bottom=0.05 + 0.03)
+    plt.suptitle('Ballistically-Propagated Solar Wind (With Upstream Source)')
+    applySmartTimeTicks(ax, timerange, dolabel=ax == fig.axes[-1])
+    #plt.xlabel('Time UTC')
+    fig.savefig(f'{date_start.strftime('%Y-%m-%d')}_outputprop.png', dpi=300)
