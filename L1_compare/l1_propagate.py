@@ -564,7 +564,8 @@ plotvars = ['by', 'bz', 'n', 't', 'ux']
 for ax, v in zip(fig.axes, plotvars):
     c = ax.get_lines()[0].get_color()
     ax.plot(raw['time'], raw[v], '--', c=c, alpha=.5)
-    ax.plot(raw['time'][...][discard], raw[v][...][discard],
+    print(raw['time'][...][discard])
+    ax.plot(raw['time'][:][discard], raw[v][...][discard],
             '.', c='crimson', alpha=.5)
 l1 = Line2D([], [], color='gray', lw=4,
             label='Timeshifted Values')

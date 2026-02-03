@@ -49,8 +49,8 @@ units = {v: u for v, u in zip(swmf_vars, 3*['nT']+3*['km/s']+['cm-3', 'K'])}
 # Import the OMNI, ACE, and Wind data using the list of times
 event_list = pd.read_csv(args.input, delimiter=',', header=0)
 for e in range(len(event_list)-1):
-    start = event_list['Start'][e]
-    date_stop = event_list['Stop'][e]
+    start = event_list['Date_Start'][e]
+    date_stop = event_list['Date_Stop'][e]
 
     # Set up OMNI importing code
     sec = 7200
