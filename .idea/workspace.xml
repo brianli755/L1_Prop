@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8361b224-572a-4045-8aa4-3ea9c679ee93" name="Changes" comment="Fixed the issue where the phase shift was doubled to what its suppose to be. We also added code to output a csv file from our given data.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WindOrAce.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/WindOrAce.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bigdaddy.py" beforeDir="false" afterPath="$PROJECT_DIR$/bigdaddy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,14 +62,16 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Notification.DisplayName-DoNotAsk-Python Stub Packages Advertiser&quot;: &quot;Python stub package recommended&quot;,
     &quot;Notification.DoNotAsk-Python Stub Packages Advertiser&quot;: &quot;true&quot;,
+    &quot;Python.bigdaddy.executor&quot;: &quot;Run&quot;,
     &quot;Python.cdf-maker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.functions.executor&quot;: &quot;Run&quot;,
     &quot;Python.l1_spoof.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Brian/PycharmProjects/Research_Espen/L1_compare&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Brian/PycharmProjects/Research_Espen&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -79,8 +83,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Brian\PycharmProjects\Research_Espen\L1_compare" />
       <recent name="C:\Users\Brian\PycharmProjects\Research_Espen" />
+      <recent name="C:\Users\Brian\PycharmProjects\Research_Espen\L1_compare" />
       <recent name="C:\Users\Brian\PycharmProjects\Research_Espen\omni_data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -154,6 +158,10 @@
       <workItem from="1764219961294" duration="559000" />
       <workItem from="1764220546347" duration="7807000" />
       <workItem from="1764553132316" duration="5861000" />
+      <workItem from="1770749733433" duration="15752000" />
+      <workItem from="1771128494679" duration="67000" />
+      <workItem from="1771307302185" duration="1972000" />
+      <workItem from="1771966297533" duration="411000" />
     </task>
     <task id="LOCAL-00001" summary="Added code to look at raw ace and wind data">
       <option name="closed" value="true" />
@@ -224,7 +232,10 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Research_Espen$cdf_maker.coverage" NAME="cdf-maker Coverage Results" MODIFIED="1762879355805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/L1_compare" />
+    <SUITE FILE_PATH="coverage/Research_Espen$functions.coverage" NAME="functions Coverage Results" MODIFIED="1770751760119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Research_Espen$test.coverage" NAME="test Coverage Results" MODIFIED="1764620688489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
+    <SUITE FILE_PATH="coverage/Research_Espen$Doctests_in_empiricals.coverage" NAME="Doctests in empiricals Coverage Results" MODIFIED="1768355168053" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/anaconda3/envs/Research_Espen/Lib/site-packages/spacepy" />
+    <SUITE FILE_PATH="coverage/Research_Espen$bigdaddy.coverage" NAME="bigdaddy Coverage Results" MODIFIED="1771308038965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Research_Espen$l1_spoof.coverage" NAME="l1_spoof Coverage Results" MODIFIED="1764559628404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_csv" />
   </component>
 </project>

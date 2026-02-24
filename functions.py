@@ -20,10 +20,8 @@ def gse_to_gsm(x, y, z, time):
 
     from spacepy.coordinates import Coords
     from spacepy.time import Ticktock
-    print(type(time[1]))
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~')
-    print(time[0])
-    print(time[1])
+
+
     # Convert time to ticktocks:
     ticks = Ticktock(time, 'ISO')
 

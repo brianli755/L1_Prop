@@ -2,29 +2,31 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import pandas as pd
 import numpy as np
 import pyspedas
-import pytz
-from pyspedas import tplot
 import matplotlib.pyplot as plt
 from scipy.signal import medfilt
 from datetime import datetime, timedelta
 from spacepy.pybats import ImfInput
 from matplotlib.lines import Line2D
 from spacepy.plot import applySmartTimeTicks
-from numpy import bool_
-from numpy.ma import MaskedArray
-from scipy.interpolate import interp1d
-from matplotlib.dates import date2num
-from spacepy.plot import style
 from spacepy.datamodel import dmarray
-from glob import glob
-from os import path
-import re
-import pytz
 from dateutil.parser import isoparse
 
 import functions as f
 from pytplot import get_data
 
+import pytz
+from pyspedas import tplot
+
+from numpy import bool_
+from numpy.ma import MaskedArray
+from scipy.interpolate import interp1d
+from matplotlib.dates import date2num
+from spacepy.plot import style
+
+from glob import glob
+from os import path
+import re
+import pytz
 
 parser = ArgumentParser(description=__doc__,
                         formatter_class=RawDescriptionHelpFormatter)
@@ -59,7 +61,8 @@ for e in range(len(event_list)-1):
     shift = pd.Timedelta(sec, unit='s')
     ts = date_start - shift
     shifted_start = ts.strftime('%Y-%m-%d %H:%M:%S')
-
+    print(f'Collecting Data from {start} to {date_stop}.')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     pyspedas.projects.omni.data(trange=[start, date_stop], datatype='1min', level='hro2', time_clip=True)
     omni = pd.DataFrame({
         'Time': get_data('BZ_GSM')[0],
@@ -163,6 +166,45 @@ for e in range(len(event_list)-1):
 
     # Getting Upstream Data
     # Uses the same stuff as before to generate a new upstream file, also exports a plot of it.
+    def append_ace(wind_check: bool, ace_check: bool):
+        x = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].empty
+        if x and wind_check == True:
+            wind_check = False
+            append_wind(wind_check, ace_check)
+        if not x:
+            ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
+            bx.append(ace['BX'][ind])
+            by.append(ace['BY'][ind])
+            bz.append(ace['BZ'][ind])
+            up_time.append(isotime)
+            pt_ID.append(71)
+        else:
+            append_nan()
+
+
+    def append_wind(wind_check, ace_check: bool):
+        x = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
+        if x and ace_check == True:
+            ace_check = False
+            append_ace(wind_check, ace_check)
+        if not x:
+            ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
+            bx.append(wind['BX'][ind])
+            by.append(wind['BY'][ind])
+            bz.append(wind['BZ'][ind])
+            up_time.append(isotime)
+            pt_ID.append(51)
+        else:
+            append_nan()
+
+
+    def append_nan():
+        bx.append(np.nan)
+        by.append(np.nan)
+        bz.append(np.nan)
+
+        up_time.append(isotime)
+        pt_ID.append(np.nan)
     up_time = []
     shift = []
 
@@ -176,65 +218,81 @@ for e in range(len(event_list)-1):
         time = omni['Time'][i] - delta
         isotime = time.isoformat() #+ '.000Z'
         shift.append(delta)
+        wind_check = True
+        ace_check = True
 
         match omni['IMF'][i]:
+
             # If the spacecraft ID is 71, get the data from ace.
             case 71:
-                ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                # if ace doesn't have the data, get the data from wind
-
-                if np.isnan(ace['BZ'][ind]):
-                    #("found a nan")
-                    ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                    #print('1')
-                    bx.append(wind['BX'][ind])
-                    by.append(wind['BY'][ind])
-                    bz.append(wind['BZ'][ind])
-                    up_time.append(isotime)
-                    pt_ID.append(51)
-                else:
-                    bx.append(ace['BX'][ind])
-                    by.append(ace['BY'][ind])
-                    bz.append(ace['BZ'][ind])
-                    up_time.append(isotime)
-                    pt_ID.append(71)
+                append_wind(wind_check, ace_check)
 
             # if the spacecraft ID is 51 or 52 get the data from wind
             case 51 | 52:
-                ind = wind.loc[wind['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                # if wind doesn't have the data, get the data from ace
-                if np.isnan(wind['BZ'][ind]):
-                    #print("3")
-                    ind = ace.loc[ace['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                    bx.append(ace['BX'][ind])
-                    by.append(ace['BY'][ind])
-                    bz.append(ace['BZ'][ind])
-
-                    up_time.append(isotime)
-                    pt_ID.append(71)
-
-                else:
-                    #print('4')
-                    bx.append(wind['BX'][ind])
-                    by.append(wind['BY'][ind])
-                    bz.append(wind['BZ'][ind])
-
-                    up_time.append(isotime)
-                    pt_ID.append(51)
-
+                append_wind(wind_check, ace_check)
             case _:
-                id = pt_ID[-1]
-                bx.append(np.nan)
-                by.append(np.nan)
-                bz.append(np.nan)
-
-                up_time.append(isotime)
-                pt_ID.append(id)
+                id = omni['IMF'][i]
+                while id == np.nan:
+                    id = pt_ID[-1]
+                if id == 71:
+                    append_ace(wind_check, ace_check)
+                else:
+                    append_wind(wind_check, ace_check)
 
     mfi = pd.DataFrame({'Time': up_time, 'bx': bx, 'by': by, 'bz': bz})
     mfi = mfi.sort_values(by='Time')
     mfi = mfi.set_index('Time')
     mfi = mfi.reset_index()
+
+
+    def append_ace2(wind_check: bool, ace_check: bool):
+        x = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].empty
+        if x and wind_check == True:
+            wind_check = False
+            append_wind2(wind_check, ace_check)
+        if not x:
+            ind = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+            vx.append(ace2['VX'][ind])
+            vy.append(ace2['VY'][ind])
+            vz.append(ace2['VZ'][ind])
+
+            npr.append(ace2['NP'][ind])
+            temp.append(ace2['Temp'][ind])
+            up_time.append(isotime)
+            pt_ID.append(71)
+        else:
+            append_nan2()
+
+
+    def append_wind2(wind_check, ace_check: bool):
+        x = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].empty
+        if x and ace_check == True:
+            ace_check = False
+            append_ace2(wind_check, ace_check)
+        if not x:
+            ind = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].index[0]
+            vx.append(wind2['VX'][ind])
+            vy.append(wind2['VY'][ind])
+            vz.append(wind2['VZ'][ind])
+
+            npr.append(wind2['NP'][ind])
+            temp.append(wind2['Temp'][ind])
+
+            pt_ID.append(51)
+            up_time.append(isotime)
+        else:
+            append_nan2()
+
+
+    def append_nan2():
+        vx.append(np.nan)
+        vy.append(np.nan)
+        vz.append(np.nan)
+
+        npr.append(np.nan)
+        temp.append(np.nan)
+        up_time.append(isotime)
+        pt_ID.append(np.nan)
 
     up_time = []
     shift = []
@@ -252,68 +310,28 @@ for e in range(len(event_list)-1):
         time = omni['Time'][i] - delta
         isotime = time.isoformat() #+ '.000Z'
         shift.append(delta)
+        wind_check = True
+        ace_check = True
 
         match omni['IMF'][i]:
+
             # If the spacecraft ID is 71, get the data from ace.
             case 71:
-                ind = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                # if ace doesn't have the data, get the data from wind
-                if np.isnan(ace2['VX'][ind]):
-                    ind = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                    vx.append(wind2['VX'][ind])
-                    vy.append(wind2['VY'][ind])
-                    vz.append(wind2['VZ'][ind])
-
-                    npr.append(wind2['NP'][ind])
-                    temp.append(wind2['Temp'][ind])
-
-                    pt_ID.append(51)
-                    up_time.append(isotime)
-
-                else:
-                    vx.append(ace2['VX'][ind])
-                    vy.append(ace2['VY'][ind])
-                    vz.append(ace2['VZ'][ind])
-
-                    npr.append(ace2['NP'][ind])
-                    temp.append(ace2['Temp'][ind])
-                    up_time.append(isotime)
-                    pt_ID.append(71)
+                append_ace2(wind_check, ace_check)
 
             # if the spacecraft ID is 51 or 52 get the data from wind
             case 51 | 52:
-                ind = wind2.loc[wind2['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                # if wind doesn't have the data, get the data from ace
-                if np.isnan(wind2['VX'][ind]):
-                    ind = ace2.loc[ace2['Time'] == omni['Time'].iloc[i] - delta].index[0]
-                    vx.append(ace2['VX'][ind])
-                    vy.append(ace2['VY'][ind])
-                    vz.append(ace2['VZ'][ind])
 
-                    npr.append(ace2['NP'][ind])
-                    temp.append(ace2['Temp'][ind])
-                    up_time.append(isotime)
-                    pt_ID.append(71)
-                else:
-                    vx.append(wind2['VX'][ind])
-                    vy.append(wind2['VY'][ind])
-                    vz.append(wind2['VZ'][ind])
-
-                    npr.append(wind2['NP'][ind])
-                    temp.append(wind2['Temp'][ind])
-                    up_time.append(isotime)
-                    pt_ID.append(51)
+                append_wind2(wind_check, ace_check)
 
             case _:
-                id = pt_ID[-1]
-                vx.append(np.nan)
-                vy.append(np.nan)
-                vz.append(np.nan)
-
-                npr.append(np.nan)
-                temp.append(np.nan)
-                up_time.append(isotime)
-                pt_ID.append(id)
+                id = omni['IMF'][i]
+                while id == np.nan:
+                    id = pt_ID[-1]
+                if id == 71:
+                    append_ace2(wind_check, ace_check)
+                else:
+                    append_wind2(wind_check, ace_check)
 
     swe = pd.DataFrame({'Time': up_time, 'VX': vx, 'VY': vy, 'VZ': vz, 'Temp': temp, 'NP': npr})
     swe = swe.sort_values(by='Time')
@@ -421,12 +439,10 @@ for e in range(len(event_list)-1):
         ax.plot(raw['time'], raw[v], '--', c=c, alpha=.5)
         #ax.plot(raw['time'][:][discard], raw[v][...][discard],
                 #'.', c='crimson', alpha=.5)
-    l1 = Line2D([], [], color='red', lw=4,
+    l1 = Line2D([], [], color='red', lw=2,
                 label='Timeshifted (Downstream) Values')
-    l2 = Line2D([], [], color='red', alpha=.5, linestyle='--', lw=4,
+    l2 = Line2D([], [], color='red', alpha=.5, linestyle='--', lw=2,
                 label='Original (Reconstructed Upstream) Values')
-    #l3 = Line2D([], [], marker='.', mfc='crimson', linewidth=0, mec='crimson',
-                #markersize=10, label='Removed Points')
     fig.legend(handles=[l1, l2], loc='upper center', ncol=2)
     #fig.subplots_adjust(top=.933)
     fig.subplots_adjust(hspace=0.04, top=0.95, right=0.95,
