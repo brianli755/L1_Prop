@@ -241,8 +241,10 @@ for e in range(len(event_list)-1):
 
     mfi = pd.DataFrame({'Time': up_time, 'bx': bx, 'by': by, 'bz': bz})
     mfi = mfi.sort_values(by='Time')
-    mfi = mfi.set_index('Time')
-    mfi = mfi.reset_index()
+    mfi['datetime'] = pd.to_datetime(mfi['Time'])
+    mfi.set_index('datetime', inplace = True)
+    mfi.interpolate(method='time', inplace=True)
+    mfi = mfi.reset_index(drop=True)
 
 
     def append_ace2(wind_check: bool, ace_check: bool):
@@ -335,9 +337,10 @@ for e in range(len(event_list)-1):
 
     swe = pd.DataFrame({'Time': up_time, 'VX': vx, 'VY': vy, 'VZ': vz, 'Temp': temp, 'NP': npr})
     swe = swe.sort_values(by='Time')
-    swe = swe.set_index('Time')
-    swe = swe.reset_index()
-
+    swe['datetime'] = pd.to_datetime(swe['Time'])
+    swe.set_index('datetime', inplace=True)
+    swe.interpolate(method='time', inplace=True)
+    swe = swe.reset_index(drop=True)
     # Plotting the upstream vs. OMNI
     #fig, ax = plt.subplots(4, 1, figsize = (12, 16))
     #ax[0].plot(omni['Time'], omni['VZ'], label='Omni', color='red', linestyle='-')
